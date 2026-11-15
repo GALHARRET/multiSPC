@@ -2,20 +2,53 @@
 % Please edit documentation in R/T2_Hotelling_k1.R
 \name{T2_Hotelling_k1}
 \alias{T2_Hotelling_k1}
-\title{Une fonction qui calcule T2 pour une matrice X(k,p)}
+\title{Hotelling \eqn{T^2} statistic for individual observations}
 \usage{
 T2_Hotelling_k1(data, S = cov(data), MoyT = apply(data, 2, mean))
 }
 \arguments{
-\item{data}{La matrice X(k,p)}
+\item{data}{A numeric matrix \eqn{k \times p}.}
 
-\item{S}{La matrice de covariance empirique de X}
+\item{S}{\eqn{p \times p} covariance matrix. Defaults to \code{cov(data)}.}
 
-\item{MoyT}{La moyenne de X(.,.)}
+\item{MoyT}{Numeric vector of length \eqn{p}, the reference mean. Defaults
+to the column means of \code{data}.}
 }
 \value{
-le T2 pour les k prélèvements.I
+A numeric vector of length \eqn{k}.
 }
 \description{
-Une fonction qui calcule T2 pour une matrice X(k,p)
+Computes, for each of the \eqn{k} individual observations (\eqn{n = 1}),
+the statistic
+\deqn{T^2_t = (X_t - \bar X)^\top S^{-1}(X_t - \bar X).}
+}
+\details{
+With individual data, the sample covariance is sensitive to shifts. A
+robust alternative is the estimator based on successive differences,
+\code{S = cov(diff(data)) / 2} (Holmes and Mergen, 1993).
+
+\strong{Phase II:} always pass the Phase I mean through \code{MoyT}. With the
+default value, the new data would be centred on their own mean and a shift
+of the mean could not be detected.
+}
+\examples{
+data(bimetal1); data(bimetal2)
+S <- cov(diff(bimetal1)) / 2
+T2 <- T2_Hotelling_k1(bimetal1, S = S)
+LSC <- LSC_T2_Hotelling_k1(bimetal1)
+plot_chart(T2, LSC = LSC["PhaseI"], Type = "T2 chart - Phase I")
+# Phase II, centred on the Phase I mean
+T2new <- T2_Hotelling_k1(bimetal2, S = S, MoyT = Moy_T(bimetal1))
+plot_chart(T2new, LSC = LSC["PhaseII"], Type = "T2 chart - Phase II")
+}
+\references{
+Sullivan, J. H. and Woodall, W. H. (1996). A comparison of
+multivariate control charts for individual observations. \emph{Journal of
+Quality Technology}, 28(4), 398--408.
+
+Holmes, D. S. and Mergen, A. E. (1993). Improving the performance of the
+\eqn{T^2} control chart. \emph{Quality Engineering}, 5(4), 619--625.
+}
+\seealso{
+\code{\link[=LSC_T2_Hotelling_k1]{LSC_T2_Hotelling_k1()}}, \code{\link[=T2_MEWMA_k1]{T2_MEWMA_k1()}}, \code{\link[=plot_chart]{plot_chart()}}
 }

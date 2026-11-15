@@ -2,16 +2,39 @@
 % Please edit documentation in R/generalized_variance.R
 \name{generalized_variance}
 \alias{generalized_variance}
-\title{Une fonction qui calcule la carte de la variance pour une matrice X(k,p,n)}
+\title{Generalized variance control chart}
 \usage{
 generalized_variance(data)
 }
 \arguments{
-\item{data}{La matrice X(k,p,n)}
+\item{data}{A numeric array \eqn{k \times p \times n}, with \eqn{n > p}.}
 }
 \value{
-Une liste : le déterminant de data pour les k prélèvements et le LSC phase I
+A list with components \code{detSj} (vector of the \eqn{k}
+determinants), \code{LIC} and \code{LSC} (lower and upper control limits).
 }
 \description{
-Une fonction qui calcule la carte de la variance pour une matrice X(k,p,n)
+Computes, for each of the \eqn{k} subgroups, the generalized variance
+\eqn{|S_t|} (determinant of the within-subgroup covariance matrix) and
+the \eqn{3\sigma} control limits of the generalized variance chart
+(Alt, 1985):
+\deqn{UCL = \frac{|S|}{b_1}\left(b_1 + 3\sqrt{b_2}\right), \qquad
+      LCL = \max\left(0,\ \frac{|S|}{b_1}\left(b_1 - 3\sqrt{b_2}\right)
+      \right),}
+where \eqn{S} is the pooled covariance matrix and \eqn{b_1}, \eqn{b_2}
+are the constants giving the mean and variance of \eqn{|S_t|}.
+This chart monitors the dispersion of a multivariate process.
+}
+\examples{
+data(carbon1)
+GV <- generalized_variance(carbon1)
+plot_chart(GV$detSj, LIC = GV$LIC, LSC = GV$LSC,
+           Type = "Generalized variance chart")
+}
+\references{
+Alt, F. B. (1985). Multivariate quality control. In
+\emph{Encyclopedia of Statistical Sciences}, vol. 6, Wiley.
+}
+\seealso{
+\code{\link[=covariance_X]{covariance_X()}}, \code{\link[=plot_chart]{plot_chart()}}
 }

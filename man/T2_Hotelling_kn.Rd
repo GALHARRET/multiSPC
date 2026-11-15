@@ -2,22 +2,50 @@
 % Please edit documentation in R/T2_Hotelling_kn.R
 \name{T2_Hotelling_kn}
 \alias{T2_Hotelling_kn}
-\title{Une fonction qui calcule T2 pour une matrice X(k,p,n)}
+\title{Hotelling \eqn{T^2} statistic for subgrouped data}
 \usage{
 T2_Hotelling_kn(data, MoyT = Moy_T(data), S = covariance_X(data), alpha = 0.01)
 }
 \arguments{
-\item{data}{La matrice X(k,p,n)}
+\item{data}{A numeric array of dimensions \eqn{k \times p \times n}.}
 
-\item{MoyT}{La moyenne de X(.,.,.)}
+\item{MoyT}{Numeric vector of length \eqn{p}, the reference mean. Defaults
+to the grand mean of \code{data}.}
 
-\item{S}{La matrice de covariance empirique de X}
+\item{S}{\eqn{p \times p} covariance matrix. Defaults to the pooled
+covariance of \code{data}.}
 
-\item{alpha}{Niveau de confiance pour les LSC}
+\item{alpha}{Not used; kept for backward compatibility. Use
+\code{\link[=LSC_T2_Hotelling_kn]{LSC_T2_Hotelling_kn()}} to compute control limits.}
 }
 \value{
-le T2 pour les k prélèvements.
+A numeric vector of length \eqn{k}.
 }
 \description{
-Une fonction qui calcule T2 pour une matrice X(k,p,n)
+Computes, for each of the \eqn{k} subgroups of size \eqn{n}, the Hotelling
+statistic
+\deqn{T^2_t = n(\bar X_t - \bar X)^\top S^{-1}(\bar X_t - \bar X),}
+where \eqn{\bar X_t} is the vector of subgroup means, \eqn{\bar X} the grand
+mean and \eqn{S} the pooled covariance matrix.
+}
+\details{
+In Phase II, pass the Phase I estimates through \code{MoyT} and \code{S}.
+}
+\examples{
+data(carbon1); data(carbon2)
+# Phase I
+T2 <- T2_Hotelling_kn(carbon1)
+LSC <- LSC_T2_Hotelling_kn(carbon1)
+plot_chart(T2, LSC = LSC["PhaseI"], Type = "T2 chart - Phase I")
+# Phase II, with the Phase I estimates
+T2new <- T2_Hotelling_kn(carbon2, MoyT = Moy_T(carbon1),
+                         S = covariance_X(carbon1))
+plot_chart(T2new, LSC = LSC["PhaseII"], Type = "T2 chart - Phase II")
+}
+\references{
+Montgomery, D. C. (2019). \emph{Introduction to Statistical Quality
+Control}, 8th ed. Wiley, chapter 11.
+}
+\seealso{
+\code{\link[=LSC_T2_Hotelling_kn]{LSC_T2_Hotelling_kn()}}, \code{\link[=T2_Hotelling_kn_MYT]{T2_Hotelling_kn_MYT()}}, \code{\link[=plot_chart]{plot_chart()}}
 }

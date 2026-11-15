@@ -2,16 +2,37 @@
 % Please edit documentation in R/d3.R
 \name{d3}
 \alias{d3}
-\title{Une fonction qui calcule une estimation de d3 basé sur des simulations MC}
+\title{Constant \eqn{d_3(n)}}
 \usage{
 d3(n)
 }
 \arguments{
-\item{n}{Le nombre d'observations}
+\item{n}{Integer (vector), subgroup size (\eqn{n \ge 2}).}
 }
 \value{
-d3 estimé
+A numeric vector, the values of \eqn{d_3(n)}.
 }
 \description{
-Une fonction qui calcule une estimation de d3 basé sur des simulations MC
+Estimates the constant \eqn{d_3(n)}, the standard deviation of the range of
+a sample of size \eqn{n} drawn from a standard normal distribution. It is
+used to compute the control limits of the range (R) chart, whose standard
+deviation is estimated by \eqn{(d_3/d_2)\bar R}.
+}
+\details{
+It is computed by numerical integration, from the second moment of the
+range,
+\deqn{E[R^2] = 2\int_{-\infty}^{+\infty}\int_{-\infty}^{y}
+      \left[1 - \Phi(y)^n - (1-\Phi(x))^n + (\Phi(y)-\Phi(x))^n\right]
+      dx\,dy,}
+and \eqn{d_3(n) = \sqrt{E[R^2] - d_2(n)^2}}.
+}
+\examples{
+d3(5)   # 0.864
+}
+\references{
+Montgomery, D. C. (2019). \emph{Introduction to Statistical Quality
+Control}, 8th ed. Wiley.
+}
+\seealso{
+\code{\link[=c4]{c4()}}, \code{\link[=d2]{d2()}}
 }

@@ -2,16 +2,36 @@
 % Please edit documentation in R/c4.R
 \name{c4}
 \alias{c4}
-\title{Une fonction qui calcule une estimation de c4 basé sur des simulations MC}
+\title{Bias-correction constant \eqn{c_4(n)}}
 \usage{
 c4(n)
 }
 \arguments{
-\item{n}{Le nombre d'observations}
+\item{n}{Integer (vector), subgroup size (\eqn{n \ge 2}).}
 }
 \value{
-c4 estimé
+A numeric vector, the values of \eqn{c_4(n)}.
 }
 \description{
-Une fonction qui calcule une estimation de c4 basé sur des simulations MC
+Estimates the constant \eqn{c_4(n) = E[S]}, the expected sample standard
+deviation of a sample of size \eqn{n} drawn from a standard normal
+distribution. It is used to obtain an unbiased estimate of the process
+standard deviation from the average of subgroup standard deviations,
+\eqn{\hat\sigma = \bar S / c_4(n)}.
+}
+\details{
+The exact value is
+\deqn{c_4(n) = \sqrt{\frac{2}{n-1}}\,
+      \frac{\Gamma(n/2)}{\Gamma((n-1)/2)}.}
+}
+\examples{
+c4(5)   # 0.9400
+c4(2:10)
+}
+\references{
+Montgomery, D. C. (2019). \emph{Introduction to Statistical Quality
+Control}, 8th ed. Wiley.
+}
+\seealso{
+\code{\link[=d2]{d2()}}, \code{\link[=d3]{d3()}}, \code{\link[=sigma_I]{sigma_I()}}
 }

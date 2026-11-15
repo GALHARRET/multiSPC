@@ -2,18 +2,33 @@
 % Please edit documentation in R/efficacite_Shewart_moy.R
 \name{efficacite_Shewart_moy}
 \alias{efficacite_Shewart_moy}
-\title{Une fonction qui renvoie l'efficacité de la carte de la moyenne de Shewart}
+\title{Power and ARL of the Shewhart chart for the mean}
 \usage{
 efficacite_Shewart_moy(rho, n)
 }
 \arguments{
-\item{rho}{Décentrage (en nombre d'écarts types)}
+\item{rho}{Numeric (vector), size of the shift in units of the process
+standard deviation \eqn{\sigma}.}
 
-\item{n}{nombre d'observations par prélèvement}
+\item{n}{Integer, subgroup size.}
 }
 \value{
-La puissance de la carte et l'ARL
+A list with components \code{puissance} (power, \eqn{1-\beta}) and
+\code{ARL} (average number of subgroups until detection).
 }
 \description{
-Une fonction qui renvoie l'efficacité de la carte de la moyenne de Shewart
+Computes the probability that a Shewhart \eqn{\bar X} chart with
+\eqn{3\sigma} limits signals at the first subgroup after a shift of the
+mean, and the corresponding average run length (ARL).
+}
+\details{
+For a shift of \eqn{\rho} standard deviations and subgroups of size
+\eqn{n}, the probability of not detecting the shift is
+\deqn{\beta = \Phi(3 - \rho\sqrt n) - \Phi(-3 - \rho\sqrt n),}
+the power is \eqn{1-\beta} and \eqn{ARL = 1/(1-\beta)}.
+}
+\examples{
+efficacite_Shewart_moy(rho = 1, n = 4)
+# in-control ARL (no shift): about 370
+efficacite_Shewart_moy(rho = 0, n = 4)$ARL
 }

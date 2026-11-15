@@ -2,16 +2,26 @@
 % Please edit documentation in R/Moy_X.R
 \name{Moy_X}
 \alias{Moy_X}
-\title{Une fonction qui calcule le moyenne sur n d'une matrice X(k,p,n)}
+\title{Subgroup means of a three-way array}
 \usage{
 Moy_X(data)
 }
 \arguments{
-\item{data}{La matrice X de dimensions k,p,n}
+\item{data}{A numeric array of dimensions \eqn{k \times p \times n}.}
 }
 \value{
-La matrice k,p dont les élements sont les moyennes des X(i,j,.) sur les n observations
+A \eqn{k \times p} matrix of subgroup means, with the column names
+of \code{data}.
 }
 \description{
-Une fonction qui calcule le moyenne sur n d'une matrice X(k,p,n)
+For data stored in a \eqn{k \times p \times n} array (\eqn{k} subgroups,
+\eqn{p} quality characteristics, \eqn{n} observations per subgroup),
+computes the mean of each characteristic within each subgroup.
+}
+\examples{
+data(carbon1)
+head(Moy_X(carbon1))
+}
+\seealso{
+\code{\link[=Moy_T]{Moy_T()}}, \code{\link[=covariance_X]{covariance_X()}}
 }

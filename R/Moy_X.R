@@ -1,12 +1,17 @@
-#' Une fonction qui calcule le moyenne sur n d'une matrice X(k,p,n)
+#' Subgroup means of a three-way array
 #'
-
+#' For data stored in a \eqn{k \times p \times n} array (\eqn{k} subgroups,
+#' \eqn{p} quality characteristics, \eqn{n} observations per subgroup),
+#' computes the mean of each characteristic within each subgroup.
 #'
-#' @param data La matrice X de dimensions k,p,n
-#' @return La matrice k,p dont les élements sont les moyennes des X(i,j,.) sur les n observations
+#' @param data A numeric array of dimensions \eqn{k \times p \times n}.
+#' @return A \eqn{k \times p} matrix of subgroup means, with the column names
+#'   of `data`.
+#' @seealso [Moy_T()], [covariance_X()]
+#' @examples
+#' data(carbon1)
+#' head(Moy_X(carbon1))
 #' @export
-
-
 Moy_X=function(data){
   k=dim(data)[1]
   p=dim(data)[2]

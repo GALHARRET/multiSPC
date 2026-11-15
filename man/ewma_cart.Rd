@@ -2,26 +2,51 @@
 % Please edit documentation in R/ewma_cart.R
 \name{ewma_cart}
 \alias{ewma_cart}
-\title{Carte univariée EWMA}
+\title{Univariate EWMA control chart}
 \usage{
 ewma_cart(M, mu, sig, lambda = 0.4, L = 3)
 }
 \arguments{
-\item{M}{vecteur des k moyennes des  échantillons}
+\item{M}{Numeric vector of the \eqn{k} subgroup means.}
 
-\item{mu}{moyenne du procédé}
+\item{mu}{Numeric, target (in-control) process mean.}
 
-\item{sig}{écart type du procédé}
+\item{sig}{Numeric, process standard deviation.}
 
-\item{lambda}{paramètre de lissage}
+\item{lambda}{Smoothing parameter, \eqn{0 < \lambda \le 1}. Usual values
+lie between 0.1 and 0.5.}
 
-\item{L}{limite de contrôle}
-
-\item{n}{taille des échantillons}
+\item{L}{Width of the control limits, in units of \code{sig}.}
 }
 \value{
-les valeurs de la carte EWMA
+A data frame with columns \code{t} (subgroup index), \code{z} (EWMA
+statistic), \code{LIC} and \code{LSC} (lower and upper control limits).
 }
 \description{
-Carte univariée EWMA
+Computes the exponentially weighted moving average (EWMA) statistic of a
+sequence of subgroup means and its time-varying control limits.
+}
+\details{
+The statistic is
+\deqn{z_i = \lambda \bar x_i + (1-\lambda) z_{i-1},}
+starting from \eqn{z_0 = \mu}. The control limits are
+\deqn{\mu \pm L\,\sigma\sqrt{\frac{\lambda}{2-\lambda}
+      \left[1-(1-\lambda)^{2i}\right]}.}
+When \code{sig} is the standard deviation of individual observations and the
+chart is applied to means of subgroups of size \eqn{n}, use
+\code{L = L0 / sqrt(n)} (for instance \code{L = 2.7 / sqrt(n)}).
+}
+\examples{
+set.seed(1)
+n <- 3
+M <- c(rnorm(10, 15, 0.5 / sqrt(n)), rnorm(10, 15.5, 0.5 / sqrt(n)))
+Z <- ewma_cart(M, mu = 15, sig = 0.5, lambda = 0.4, L = 2.7 / sqrt(n))
+plot_chart(Z$z, LIC = Z$LIC, LSC = Z$LSC, Type = "EWMA chart")
+}
+\references{
+Roberts, S. W. (1959). Control chart tests based on geometric
+moving averages. \emph{Technometrics}, 1(3), 239--250.
+}
+\seealso{
+\code{\link[=plot_chart]{plot_chart()}}
 }

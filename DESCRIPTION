@@ -1,18 +1,28 @@
 Package: multiSPC
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.1
+Title: Univariate and Multivariate Statistical Process Control
+Version: 0.2.0
 Authors@R: c(
-    person(
-      "Jean-Michel", "Galharret",
-      email = "jean-michel.galharret@oniris-nantes.fr",
-      role = c("aut", "cre")
+    person("Jean-Michel", "Galharret",
+           email = "jean-michel.galharret@oniris-nantes.fr",
+           role = c("aut", "cre")),
+    person("Edgar", "Santos-Fernandez", role = "ctb",
+           comment = "datasets, from the MSQC package")
     )
-  )
-Description: Package réalisé dans le cadre du cours de MSP.
-    Cartes de contrôle univariées et multivariées.
-Imports: ggplot2
-License: GPL-2
+Description: Tools for teaching and applying statistical process control:
+    estimation of process parameters, Shewhart and exponentially weighted
+    moving average (EWMA) control charts, capability indices, and
+    multivariate control charts, including Hotelling T2 charts for
+    subgrouped and individual data, the Mason-Young-Tracy decomposition,
+    multivariate EWMA, generalized variance and charts on principal
+    components. Methods are described in Montgomery (2019,
+    ISBN:978-1-119-39930-8) and Santos-Fernandez (2012)
+    <doi:10.1007/978-1-4614-5453-3>.
+License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.3.3
+Depends: R (>= 3.5.0)
+Imports: ggplot2, stats, utils
+Suggests: spc
+Roxygen: list(markdown = TRUE)
+Config/roxygen2/version: 8.0.0

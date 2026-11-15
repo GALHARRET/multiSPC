@@ -2,16 +2,29 @@
 % Please edit documentation in R/Moy_T.R
 \name{Moy_T}
 \alias{Moy_T}
-\title{Une fonction qui calcule le moyenne sur k,n d'une matrice X(k,p,n)}
+\title{Grand mean of each quality characteristic}
 \usage{
 Moy_T(data)
 }
 \arguments{
-\item{data}{La matrice X de dimensions k,p,n}
+\item{data}{A numeric array \eqn{k \times p \times n} or a matrix
+\eqn{k \times p}.}
 }
 \value{
-Le vecteur de taille p des moyennes sur les k*n observations
+A numeric vector of length \eqn{p}.
 }
 \description{
-Une fonction qui calcule le moyenne sur k,n d'une matrice X(k,p,n)
+Computes the overall mean of each of the \eqn{p} characteristics. For a
+\eqn{k \times p \times n} array, this is the mean of the \eqn{k} subgroup
+means returned by \code{\link[=Moy_X]{Moy_X()}}; for a \eqn{k \times p} matrix, it is the
+column mean.
+}
+\examples{
+data(carbon1)
+Moy_T(carbon1)
+data(bimetal1)
+Moy_T(bimetal1)
+}
+\seealso{
+\code{\link[=Moy_X]{Moy_X()}}, \code{\link[=T2_Hotelling_kn]{T2_Hotelling_kn()}}
 }

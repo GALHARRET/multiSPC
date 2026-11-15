@@ -2,18 +2,38 @@
 % Please edit documentation in R/T2_MEWMA_kn.R
 \name{T2_MEWMA_kn}
 \alias{T2_MEWMA_kn}
-\title{Une fonction qui calcule T2 basé sur MEWMA pour une matrice X(k,p,n)}
+\title{MEWMA statistic for subgrouped data}
 \usage{
 T2_MEWMA_kn(data, lambda = 0.1)
 }
 \arguments{
-\item{data}{La matrice X(k,p,n)}
+\item{data}{A numeric array \eqn{k \times p \times n}.}
 
-\item{lambda}{Le paramètre d'autocorrélation}
+\item{lambda}{Smoothing parameter, \eqn{0 < \lambda \le 1}.}
 }
 \value{
-T2 pour les k prélèvements
+A numeric vector of length \eqn{k}.
 }
 \description{
-Une fonction qui calcule T2 basé sur MEWMA pour une matrice X(k,p,n)
+Same as \code{\link[=T2_MEWMA_k1]{T2_MEWMA_k1()}}, applied to the subgroup means of a
+\eqn{k \times p \times n} array:
+\deqn{Z_t = \lambda \bar X_t + (1-\lambda)Z_{t-1}, \qquad Z_0 = \bar X,}
+\deqn{T^2_t = (Z_t - \bar X)^\top \Sigma_{Z_t}^{-1} (Z_t - \bar X),
+      \qquad \Sigma_{Z_t} = \frac{\lambda\left[1-(1-\lambda)^{2t}\right]}
+      {2-\lambda}\,S,}
+where \eqn{S = S_p/n} is the covariance matrix of the subgroup means,
+\eqn{S_p} being the pooled within-subgroup covariance matrix returned by
+\code{\link[=covariance_X]{covariance_X()}}.
+}
+\examples{
+data(carbon1)
+T2_MEWMA_kn(carbon1, lambda = 0.1)
+}
+\references{
+Lowry, C. A., Woodall, W. H., Champ, C. W. and Rigdon, S. E.
+(1992). A multivariate exponentially weighted moving average control
+chart. \emph{Technometrics}, 34(1), 46--53.
+}
+\seealso{
+\code{\link[=T2_MEWMA_k1]{T2_MEWMA_k1()}}, \code{\link[=covariance_X]{covariance_X()}}
 }

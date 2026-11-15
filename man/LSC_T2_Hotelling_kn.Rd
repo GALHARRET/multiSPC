@@ -2,18 +2,35 @@
 % Please edit documentation in R/LSC_T2_Hotelling_kn.R
 \name{LSC_T2_Hotelling_kn}
 \alias{LSC_T2_Hotelling_kn}
-\title{Une fonction qui calcule LSC T2 pour une matrice X(k,p,n) et alpha=0.01}
+\title{Upper control limits of the \eqn{T^2} chart for subgrouped data}
 \usage{
 LSC_T2_Hotelling_kn(data, alpha = 0.01)
 }
 \arguments{
-\item{data}{La matrice X(k,p,n)}
+\item{data}{A numeric array of dimensions \eqn{k \times p \times n}
+(Phase I data).}
 
-\item{alpha}{Le niveau de significativité}
+\item{alpha}{Significance level (false-alarm probability per subgroup).}
 }
 \value{
-les LSC pour la phase I et pour la phase II
+A named numeric vector with elements \code{PhaseI} and \code{PhaseII}.
 }
 \description{
-Une fonction qui calcule LSC T2 pour une matrice X(k,p,n) et alpha=0.01
+Computes the Phase I and Phase II upper control limits of the Hotelling
+\eqn{T^2} chart for \eqn{k} subgroups of size \eqn{n > 1} on \eqn{p}
+characteristics, using the \eqn{F} distribution:
+\deqn{UCL_I = \frac{p(k-1)(n-1)}{kn-k-p+1}F_{p,\,kn-k-p+1}(1-\alpha),}
+\deqn{UCL_{II} = \frac{p(k+1)(n-1)}{kn-k-p+1}F_{p,\,kn-k-p+1}(1-\alpha).}
+}
+\examples{
+data(carbon1)
+LSC_T2_Hotelling_kn(carbon1)
+LSC_T2_Hotelling_kn(carbon1, alpha = 0.0027)
+}
+\references{
+Montgomery, D. C. (2019). \emph{Introduction to Statistical Quality
+Control}, 8th ed. Wiley, chapter 11.
+}
+\seealso{
+\code{\link[=T2_Hotelling_kn]{T2_Hotelling_kn()}}
 }

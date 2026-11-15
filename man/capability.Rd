@@ -2,26 +2,58 @@
 % Please edit documentation in R/capability.R
 \name{capability}
 \alias{capability}
-\title{Capability of the process}
+\title{Process and machine capability indices}
 \usage{
 capability(n, mu, sI, sG, TI, TS)
 }
 \arguments{
-\item{n}{le nombre d'observations par prélèvements}
+\item{n}{Integer, number of observations used to estimate the standard
+deviations (degrees of freedom of the confidence intervals are \eqn{n-1}).}
 
-\item{mu}{la moyenne du procédé}
+\item{mu}{Numeric, process mean.}
 
-\item{sI}{l'écart type instantané}
+\item{sI}{Numeric, within-subgroup (short-term) standard deviation.}
 
-\item{sG}{l'écart type global}
+\item{sG}{Numeric, overall (long-term) standard deviation.}
 
-\item{TI}{la tolérance inférieure}
+\item{TI}{Numeric, lower specification limit.}
 
-\item{TS}{la tolérance supérieure}
+\item{TS}{Numeric, upper specification limit.}
 }
 \value{
-la liste des indices de capabilités
+A list with components \code{Cap}, \code{IC_Cap}, \code{Cpk}, \code{IC_Cpk}, \code{Cam},
+\code{IC_Cam}, \code{Cmk} and \code{IC_Cmk}. Each \verb{IC_*} component is a numeric vector
+of length 2 (lower and upper bounds of the 95\\% confidence interval).
 }
 \description{
-Capability of the process
+Computes the capability indices of a process from its mean, its overall
+(long-term) standard deviation \eqn{\sigma_G} and its within-subgroup
+(short-term) standard deviation \eqn{\sigma_I}, together with approximate
+95\\% confidence intervals.
+}
+\details{
+The indices are
+\deqn{Cap = \frac{TS - TI}{6\sigma_G}, \qquad
+      Cpk = \frac{\min(\mu - TI,\ TS - \mu)}{3\sigma_G},}
+\deqn{Cam = \frac{TS - TI}{6\sigma_I}, \qquad
+      Cmk = \frac{\min(\mu - TI,\ TS - \mu)}{3\sigma_I}.}
+\code{Cap} and \code{Cpk} are usually written \eqn{P_p} and \eqn{P_{pk}} (or
+\eqn{C_p} and \eqn{C_{pk}}) in the English literature; \code{Cam} and \code{Cmk} are
+the machine capability indices \eqn{C_m} and \eqn{C_{mk}}.
+
+Confidence intervals for \code{Cap} and \code{Cam} use the \eqn{\chi^2}
+distribution with \eqn{n-1} degrees of freedom; those for \code{Cpk} and \code{Cmk}
+use Bissell's normal approximation
+\deqn{\hat C_{pk}\left(1 \pm z_{0.975}\sqrt{\frac{1}{9n\hat C_{pk}^2} +
+      \frac{1}{2(n-1)}}\right).}
+}
+\examples{
+capability(n = 125, mu = 1.01, sI = 0.025, sG = 0.03, TI = 0.9, TS = 1.1)
+}
+\references{
+Bissell, A. F. (1990). How reliable is your capability index?
+\emph{Journal of the Royal Statistical Society, Series C}, 39(3), 331--340.
+}
+\seealso{
+\code{\link[=sigma_I]{sigma_I()}}, \code{\link[=c4]{c4()}}
 }

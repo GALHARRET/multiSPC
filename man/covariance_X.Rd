@@ -2,16 +2,28 @@
 % Please edit documentation in R/covariance_X.R
 \name{covariance_X}
 \alias{covariance_X}
-\title{Une fonction qui calcule la covariance empirique  d'une matrice X(k,p,n)}
+\title{Pooled within-subgroup covariance matrix}
 \usage{
 covariance_X(data)
 }
 \arguments{
-\item{data}{La matrice X de dimensions k,p,n}
+\item{data}{A numeric array \eqn{k \times p \times n} or a matrix
+\eqn{k \times p}.}
 }
 \value{
-La covariance empirique
+A \eqn{p \times p} covariance matrix.
 }
 \description{
-Une fonction qui calcule la covariance empirique  d'une matrice X(k,p,n)
+For a \eqn{k \times p \times n} array, estimates the covariance matrix of
+the \eqn{p} characteristics as the average of the \eqn{k} within-subgroup
+sample covariance matrices:
+\deqn{S = \frac{1}{k}\sum_{t=1}^k S_t.}
+For a matrix, it returns \code{\link[stats:cov]{stats::cov()}}.
+}
+\examples{
+data(carbon1)
+covariance_X(carbon1)
+}
+\seealso{
+\code{\link[=T2_Hotelling_kn]{T2_Hotelling_kn()}}, \code{\link[=generalized_variance]{generalized_variance()}}
 }

@@ -2,16 +2,28 @@
 % Please edit documentation in R/sigma_I.R
 \name{sigma_I}
 \alias{sigma_I}
-\title{Une fonction qui renvoie l'écart type instantané d'une matrice X(k,n)}
+\title{Within-subgroup (short-term) standard deviation}
 \usage{
 sigma_I(data)
 }
 \arguments{
-\item{data}{La matrice X(k,n)}
+\item{data}{A numeric matrix \eqn{k \times n}: one row per subgroup, one
+column per observation.}
 }
 \value{
-L'écart type instantané
+A numeric value, the estimate of \eqn{\sigma_I}.
 }
 \description{
-Une fonction qui renvoie l'écart type instantané d'une matrice X(k,n)
+Estimates the within-subgroup standard deviation \eqn{\sigma_I} as the
+average of the standard deviations divided by \eqn{c_4(n)}:
+\eqn{\hat\sigma_I = \bar S / c_4(n)}.
+}
+\examples{
+set.seed(1)
+# 25 subgroups of 5 observations, sigma = 2
+X <- matrix(rnorm(25 * 5, mean = 10, sd = 2), ncol = 5)
+sigma_I(X)
+}
+\seealso{
+\code{\link[=c4]{c4()}}, \code{\link[=capability]{capability()}}
 }

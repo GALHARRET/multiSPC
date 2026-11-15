@@ -1,14 +1,22 @@
-#' Une fonction qui crée la carte
+#' Plot a control chart
 #'
-
+#' Draws a control chart with [ggplot2::ggplot()]: the statistic for each
+#' subgroup, joined by a line, with the lower and upper control limits shown
+#' as red dashed lines.
 #'
-#' @param values Les valeurs
-#' @param LIC LIC
-#' @param LSC LSC
-#' @param xlab Label de x
-#' @param ylab label de y
-#' @param Type Le type de carte
-#' @return la carte
+#' @param values Numeric vector, the charted statistic for each subgroup.
+#' @param LIC Lower control limit: a single value or a vector of the same
+#'   length as `values` (for limits that vary over time, as in EWMA charts).
+#'   Defaults to 0, which suits \eqn{T^2} charts.
+#' @param LSC Upper control limit: a single value or a vector of the same
+#'   length as `values`.
+#' @param xlab,ylab Axis labels.
+#' @param Type Chart title.
+#' @return A `ggplot` object.
+#' @examples
+#' set.seed(1)
+#' x <- rnorm(20, mean = 10, sd = 1)
+#' plot_chart(x, LIC = 7, LSC = 13, Type = "Individuals chart")
 #' @export
 plot_chart=function(values,LIC=0,LSC,xlab="prelev.",ylab="values",Type="carte"){
   df=data.frame(t=1:length(values),values=values,

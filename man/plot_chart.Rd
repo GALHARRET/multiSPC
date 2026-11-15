@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_chart.R
 \name{plot_chart}
 \alias{plot_chart}
-\title{Une fonction qui crée la carte}
+\title{Plot a control chart}
 \usage{
 plot_chart(
   values,
@@ -14,21 +14,29 @@ plot_chart(
 )
 }
 \arguments{
-\item{values}{Les valeurs}
+\item{values}{Numeric vector, the charted statistic for each subgroup.}
 
-\item{LIC}{LIC}
+\item{LIC}{Lower control limit: a single value or a vector of the same
+length as \code{values} (for limits that vary over time, as in EWMA charts).
+Defaults to 0, which suits \eqn{T^2} charts.}
 
-\item{LSC}{LSC}
+\item{LSC}{Upper control limit: a single value or a vector of the same
+length as \code{values}.}
 
-\item{xlab}{Label de x}
+\item{xlab, ylab}{Axis labels.}
 
-\item{ylab}{label de y}
-
-\item{Type}{Le type de carte}
+\item{Type}{Chart title.}
 }
 \value{
-la carte
+A \code{ggplot} object.
 }
 \description{
-Une fonction qui crée la carte
+Draws a control chart with \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}}: the statistic for each
+subgroup, joined by a line, with the lower and upper control limits shown
+as red dashed lines.
+}
+\examples{
+set.seed(1)
+x <- rnorm(20, mean = 10, sd = 1)
+plot_chart(x, LIC = 7, LSC = 13, Type = "Individuals chart")
 }

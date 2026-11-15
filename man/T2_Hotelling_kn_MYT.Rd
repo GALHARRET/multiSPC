@@ -2,26 +2,58 @@
 % Please edit documentation in R/T2_Hotteling_kn_MYT.R
 \name{T2_Hotelling_kn_MYT}
 \alias{T2_Hotelling_kn_MYT}
-\title{Une fonction qui effectue la décomposition MYT pour une matrice X(k,p,n)}
+\title{MYT decomposition of an out-of-control \eqn{T^2} signal}
 \usage{
 T2_Hotelling_kn_MYT(k_hc, k, select, data, MoyT, alpha = 0.01)
 }
 \arguments{
-\item{k_hc}{Le numéro du prélèvement hors-contrôle.}
+\item{k_hc}{Integer, index of the out-of-control subgroup in \code{data}.}
 
-\item{k}{le nombre de prélèvements en phase I}
+\item{k}{Integer, number of subgroups in Phase I.}
 
-\item{select}{les variables sélectionnées}
+\item{select}{Integer vector, indices of the characteristics to include.}
 
-\item{data}{La matrice X(k,p,n) en phase I}
+\item{data}{A numeric array \eqn{k' \times p \times n} containing the
+out-of-control subgroup (usually the Phase II data).}
 
-\item{MoyT}{La moyenne de X(.,.,.)}
+\item{MoyT}{Numeric vector of length \eqn{p}, the Phase I mean (see
+\code{\link[=Moy_T]{Moy_T()}}).}
 
-\item{alpha}{Niveau de significativité}
+\item{alpha}{Significance level.}
 }
 \value{
-Une liste : le T2 pour les k prélèvements et le LSC.
+A list with components \code{T2} (the partial \eqn{T^2} statistic) and
+\code{LSC} (its upper control limit).
 }
 \description{
-Une fonction qui effectue la décomposition MYT pour une matrice X(k,p,n)
+Helps identify the characteristics responsible for an out-of-control
+signal on the \eqn{T^2} chart, following the Mason, Young and Tracy (MYT)
+decomposition. For the out-of-control subgroup \code{k_hc}, the function computes
+the \eqn{T^2} statistic restricted to the characteristics in \code{select}, and
+the corresponding upper control limit
+\deqn{UCL = \frac{p(k+1)(k-1)}{k(k-p)}F_{p,\,k-p}(1-\alpha),}
+with \eqn{p} the number of selected characteristics.
+}
+\details{
+The procedure starts with each characteristic alone (\code{select = j}), then
+examines pairs, triplets, etc., among the characteristics that are not
+individually out of control.
+}
+\examples{
+data(carbon1); data(carbon2)
+k <- dim(carbon1)[1]
+# contribution of each characteristic for subgroup 4 of Phase II
+sapply(1:3, function(j)
+  T2_Hotelling_kn_MYT(k_hc = 4, k = k, select = j, data = carbon2,
+                      MoyT = Moy_T(carbon1))$T2)
+T2_Hotelling_kn_MYT(k_hc = 4, k = k, select = c(1, 3), data = carbon2,
+                    MoyT = Moy_T(carbon1))
+}
+\references{
+Mason, R. L., Tracy, N. D. and Young, J. C. (1995).
+Decomposition of \eqn{T^2} for multivariate control chart interpretation.
+\emph{Journal of Quality Technology}, 27(2), 99--108.
+}
+\seealso{
+\code{\link[=T2_Hotelling_kn]{T2_Hotelling_kn()}}
 }

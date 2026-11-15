@@ -2,16 +2,35 @@
 % Please edit documentation in R/d2.R
 \name{d2}
 \alias{d2}
-\title{Une fonction qui calcule une estimation de d2 basé sur des simulations MC}
+\title{Bias-correction constant \eqn{d_2(n)}}
 \usage{
 d2(n)
 }
 \arguments{
-\item{n}{Le nombre d'observations}
+\item{n}{Integer (vector), subgroup size (\eqn{n \ge 2}).}
 }
 \value{
-d2 estimé
+A numeric vector, the values of \eqn{d_2(n)}.
 }
 \description{
-Une fonction qui calcule une estimation de d2 basé sur des simulations MC
+Estimates the constant \eqn{d_2(n) = E[R]}, the expected range of a sample
+of size \eqn{n} drawn from a standard normal distribution. It is used to
+estimate the process standard deviation from the average range,
+\eqn{\hat\sigma = \bar R / d_2(n)}.
+}
+\details{
+It is computed by numerical integration of
+\deqn{d_2(n) = \int_{-\infty}^{+\infty}
+      \left[1 - \Phi(x)^n - (1-\Phi(x))^n\right]dx.}
+}
+\examples{
+d2(5)   # 2.326
+d2(2:10)
+}
+\references{
+Montgomery, D. C. (2019). \emph{Introduction to Statistical Quality
+Control}, 8th ed. Wiley.
+}
+\seealso{
+\code{\link[=c4]{c4()}}, \code{\link[=d3]{d3()}}
 }

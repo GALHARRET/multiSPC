@@ -2,18 +2,49 @@
 % Please edit documentation in R/T2_MEWMA_k1.R
 \name{T2_MEWMA_k1}
 \alias{T2_MEWMA_k1}
-\title{Une fonction qui calcule T2 basé sur MEWMA pour une matrice X(k,p)}
+\title{MEWMA statistic for individual observations}
 \usage{
 T2_MEWMA_k1(data, lambda = 0.1)
 }
 \arguments{
-\item{data}{La matrice X(k,p)}
+\item{data}{A numeric matrix \eqn{k \times p}.}
 
-\item{lambda}{Le paramètre d'autocorrélation}
+\item{lambda}{Smoothing parameter, \eqn{0 < \lambda \le 1} (0.1 is a
+common choice).}
 }
 \value{
-T2 pour les k prélèvements
+A numeric vector of length \eqn{k}.
 }
 \description{
-Une fonction qui calcule T2 basé sur MEWMA pour une matrice X(k,p)
+Computes the multivariate EWMA (MEWMA) statistic of Lowry et al. (1992)
+for individual observations:
+\deqn{Z_t = \lambda X_t + (1-\lambda)Z_{t-1}, \qquad Z_0 = \bar X,}
+\deqn{T^2_t = (Z_t - \bar X)^\top \Sigma_{Z_t}^{-1} (Z_t - \bar X),
+      \qquad \Sigma_{Z_t} = \frac{\lambda\left[1-(1-\lambda)^{2t}\right]}
+      {2-\lambda}\,S,}
+with \eqn{\bar X} and \eqn{S} the sample mean and covariance of \code{data}.
+The MEWMA chart is more sensitive than the \eqn{T^2} chart to small and
+moderate shifts of the mean.
+}
+\details{
+Control limits can be obtained with \code{spc::mewma.crit()}.
+}
+\examples{
+data(bimetal1)
+T2 <- T2_MEWMA_k1(bimetal1, lambda = 0.1)
+# UCL for p = 5, lambda = 0.1 and an in-control ARL of 200
+if (requireNamespace("spc", quietly = TRUE)) {
+  UCL <- spc::mewma.crit(l = 0.1, L0 = 200, p = ncol(bimetal1), hs = 0, r = 20)
+} else {
+  UCL <- 14.54
+}
+plot_chart(T2, LSC = UCL, Type = "MEWMA chart")
+}
+\references{
+Lowry, C. A., Woodall, W. H., Champ, C. W. and Rigdon, S. E.
+(1992). A multivariate exponentially weighted moving average control
+chart. \emph{Technometrics}, 34(1), 46--53.
+}
+\seealso{
+\code{\link[=T2_MEWMA_kn]{T2_MEWMA_kn()}}, \code{\link[=ewma_cart]{ewma_cart()}}
 }
